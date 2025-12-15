@@ -85,6 +85,7 @@ void Ip::getZoomOut()
     zoomOuted =img.scaled(img.width()/2,img.height()/2);
     QLabel *ret=new QLabel();
     ret->setPixmap(QPixmap::fromImage(zoomOuted));
+    ret->setWindowTitle(tr("縮小結果"));
     ret->show();
 
 
@@ -95,6 +96,7 @@ void Ip::getZoomIn()
     zoomIned =img.scaled(img.width()*2,img.height()*2);
     QLabel *ret=new QLabel();
     ret->setPixmap(QPixmap::fromImage(zoomIned));
+    ret->setWindowTitle(tr("放大結果"));
     ret->show();
 
 
