@@ -46,6 +46,9 @@ void Ip::createMenus(){
     fileMeun = menuBar()->addMenu(tr("檔案&F"));
     fileMeun->addAction(openFileAction);
     fileMeun->addAction(exitAction);
+    fileMeun = menuBar()->addMenu(tr("工具&T"));
+    fileMeun->addAction(zoomOut);
+    fileMeun->addAction(zoomIn);
 }
 void Ip::createToolBars(){
     fileTool = addToolBar("file");
