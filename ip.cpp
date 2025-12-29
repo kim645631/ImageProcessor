@@ -4,6 +4,8 @@
 #include <QFileDialog>
 #include <QDebug>
 #include <QPixmap>
+#include "gtransform.h"
+
 Ip::Ip(QWidget *parent)
     : QMainWindow(parent)
 {
@@ -12,6 +14,7 @@ Ip::Ip(QWidget *parent)
     QHBoxLayout *mainLayout = new QHBoxLayout(central);
     imgWin = new QLabel();
     QPixmap *initPixmap = new QPixmap(300,200);
+    gWin = new Gtransform();
     initPixmap->fill(QColor(255,255,255));
     imgWin->resize(300,200);
     imgWin->setScaledContents(true);
@@ -37,6 +40,9 @@ void Ip::createActions(){
     zoomIn = new QAction(tr("放大"));
     zoomIn->setStatusTip(tr("放大影像"));
     connect(zoomIn,SIGNAL(triggered()),this,SLOT(getZoomIn()));
+    geometryAction = new QAction(tr("幾何轉換"));
+    geometryAction->setStatusTip(tr("影像幾何轉換"));
+    connect(geometryAction,SIGNAL(triggered()),this,SLOT(showGeometryTtansform()));
     exitAction =new QAction(tr("結束&Q"),this);
     exitAction->setShortcut(tr("Ctrl+Q"));
     exitAction->setStatusTip(tr("退出程式"));
@@ -45,6 +51,7 @@ void Ip::createActions(){
 void Ip::createMenus(){
     fileMeun = menuBar()->addMenu(tr("檔案&F"));
     fileMeun->addAction(openFileAction);
+    fileMeun->addAction(geometryAction);
     fileMeun->addAction(exitAction);
     fileMeun = menuBar()->addMenu(tr("工具&T"));
     fileMeun->addAction(zoomOut);
@@ -56,6 +63,8 @@ void Ip::createToolBars(){
     toolTool = addToolBar("file");
     toolTool->addAction(zoomOut);
     toolTool->addAction(zoomIn);
+    toolTool->addAction(geometryAction);
+
 }
 void Ip::loadFile(QString filename){
     qDebug()<<QString("file name:%1").arg(filename);
@@ -103,4 +112,11 @@ void Ip::getZoomIn()
     ret->show();
 
 
+}
+void Ip::showGeometryTtansform(){
+    if (!img.isNull()){
+        gWin->srcImg = img;
+        gWin->inWin->setPixmap(QPixmap::fromImage(gWin->srcImg));
+        gWin->show();
+    }
 }
