@@ -10,6 +10,7 @@
 #include <QPainter>
 #include <QSpinBox>
 #include <QColorDialog>
+#include <QScrollArea>
 
 class ZoomWindow : public QMainWindow
 {
@@ -38,6 +39,7 @@ private:
     QImage img;
     QImage drawImg;
     QLabel *imgLabel;
+    QScrollArea *scrollArea;
     QToolBar *toolbar;
     QAction *saveAsAction;
     QAction *drawModeAction;

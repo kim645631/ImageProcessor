@@ -16,7 +16,7 @@ ZoomWindow::ZoomWindow(const QImage &image, QWidget *parent)
     drawImg = img.copy();
     
     // Create central widget with scroll area
-    QScrollArea *scrollArea = new QScrollArea(this);
+    scrollArea = new QScrollArea(this);
     imgLabel = new QLabel();
     imgLabel->setScaledContents(false);
     imgLabel->setMouseTracking(true);
@@ -118,14 +118,15 @@ void ZoomWindow::changePenWidth(int width)
 void ZoomWindow::mousePressEvent(QMouseEvent *event)
 {
     if (drawMode && event->button() == Qt::LeftButton) {
-        drawing = true;
-        // Map event position to imgLabel coordinates
-        QPoint labelPos = imgLabel->mapFromGlobal(event->globalPosition().toPoint());
-        // Check if click is within the label
-        if (imgLabel->rect().contains(labelPos)) {
+        // Map from main window to scroll area viewport, then to imgLabel
+        QPoint viewportPos = scrollArea->viewport()->mapFrom(this, event->pos());
+        QPoint labelPos = imgLabel->mapFrom(scrollArea->viewport(), viewportPos);
+        
+        // Check if click is within the label bounds
+        if (labelPos.x() >= 0 && labelPos.y() >= 0 && 
+            labelPos.x() < drawImg.width() && labelPos.y() < drawImg.height()) {
+            drawing = true;
             lastPoint = labelPos;
-        } else {
-            drawing = false;
         }
     }
 }
@@ -133,11 +134,13 @@ void ZoomWindow::mousePressEvent(QMouseEvent *event)
 void ZoomWindow::mouseMoveEvent(QMouseEvent *event)
 {
     if (drawMode && drawing) {
-        // Map event position to imgLabel coordinates
-        QPoint labelPos = imgLabel->mapFromGlobal(event->globalPosition().toPoint());
+        // Map from main window to scroll area viewport, then to imgLabel
+        QPoint viewportPos = scrollArea->viewport()->mapFrom(this, event->pos());
+        QPoint labelPos = imgLabel->mapFrom(scrollArea->viewport(), viewportPos);
         
-        // Check if position is within the label
-        if (imgLabel->rect().contains(labelPos)) {
+        // Check if position is within the image bounds
+        if (labelPos.x() >= 0 && labelPos.y() >= 0 && 
+            labelPos.x() < drawImg.width() && labelPos.y() < drawImg.height()) {
             // Draw on the image
             QPainter painter(&drawImg);
             painter.setPen(QPen(penColor, penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
