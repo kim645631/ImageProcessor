@@ -19,6 +19,7 @@ ZoomWindow::ZoomWindow(const QImage &image, QWidget *parent)
     QScrollArea *scrollArea = new QScrollArea(this);
     imgLabel = new QLabel();
     imgLabel->setScaledContents(false);
+    imgLabel->setMouseTracking(true);
     updateImageLabel();
     
     scrollArea->setWidget(imgLabel);
@@ -118,24 +119,33 @@ void ZoomWindow::mousePressEvent(QMouseEvent *event)
 {
     if (drawMode && event->button() == Qt::LeftButton) {
         drawing = true;
-        // Convert to image coordinates
-        QPoint imagePos = imgLabel->mapFrom(this, event->pos());
-        lastPoint = imagePos;
+        // Map event position to imgLabel coordinates
+        QPoint labelPos = imgLabel->mapFromGlobal(event->globalPosition().toPoint());
+        // Check if click is within the label
+        if (imgLabel->rect().contains(labelPos)) {
+            lastPoint = labelPos;
+        } else {
+            drawing = false;
+        }
     }
 }
 
 void ZoomWindow::mouseMoveEvent(QMouseEvent *event)
 {
     if (drawMode && drawing) {
-        QPoint imagePos = imgLabel->mapFrom(this, event->pos());
+        // Map event position to imgLabel coordinates
+        QPoint labelPos = imgLabel->mapFromGlobal(event->globalPosition().toPoint());
         
-        // Draw on the image
-        QPainter painter(&drawImg);
-        painter.setPen(QPen(penColor, penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-        painter.drawLine(lastPoint, imagePos);
-        
-        lastPoint = imagePos;
-        updateImageLabel();
+        // Check if position is within the label
+        if (imgLabel->rect().contains(labelPos)) {
+            // Draw on the image
+            QPainter painter(&drawImg);
+            painter.setPen(QPen(penColor, penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+            painter.drawLine(lastPoint, labelPos);
+            
+            lastPoint = labelPos;
+            updateImageLabel();
+        }
     }
 }
 

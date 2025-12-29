@@ -42,7 +42,9 @@ Ip::Ip(QWidget *parent)
 }
 
 Ip::~Ip() {
-
+    if (rubberBand) {
+        delete rubberBand;
+    }
 }
 void Ip::createActions(){
     openFileAction =new QAction(tr("開啟檔案&O"),this);
@@ -229,7 +231,8 @@ void Ip::mouseReleaseEvent(QMouseEvent *event){
                 );
                 
                 // Open zoom window
-                ZoomWindow *zoomWin = new ZoomWindow(zoomedImage, this);
+                ZoomWindow *zoomWin = new ZoomWindow(zoomedImage);
+                zoomWin->setAttribute(Qt::WA_DeleteOnClose);
                 zoomWin->show();
             }
         }
