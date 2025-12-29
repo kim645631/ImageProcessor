@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QPixmap>
 #include "gtransform.h"
+#include "mouseevent.h"
 
 Ip::Ip(QWidget *parent)
     : QMainWindow(parent)
@@ -21,6 +22,7 @@ Ip::Ip(QWidget *parent)
     imgWin->setPixmap(*initPixmap);
     mainLayout->addWidget(imgWin);
     setCentralWidget(central);
+    setMouseTracking(true);
     createActions();
     createMenus();
     createToolBars();
@@ -119,4 +121,30 @@ void Ip::showGeometryTtansform(){
         gWin->inWin->setPixmap(QPixmap::fromImage(gWin->srcImg));
         gWin->show();
     }
+}
+void Ip::mouseMoveEvent(QMouseEvent *event){
+
+    QString str ="(" + QString::number(event->x()) + ", " +
+                  QString::number(event->y()) + ")";
+    mousePosLabel->setText(str);
+}
+void Ip::mousePressEvent(QMouseEvent *event){
+    QString str ="(" + QString::number(event->x()) + ", " +
+                  QString::number(event->y()) + ")";
+    if(event->button()==Qt::LeftButton){
+        statusBar()->showMessage(tr("左鍵:")+str,1000);
+    }
+    else if(event->button()==Qt::RightButton){
+        statusBar()->showMessage(tr("右鍵:")+str,500);
+    }
+    else if(event->button()==Qt::MiddleButton){
+        statusBar()->showMessage(tr("中鍵:")+str);
+    }
+    qDebug()<<"按壓";
+}
+void Ip::mouseReleaseEvent(QMouseEvent *event){
+    QString str ="(" + QString::number(event->x()) + ", " +
+                  QString::number(event->y()) + ")";
+    statusBar()->showMessage(tr("釋放:")+str,1000);
+    qDebug()<<"釋放";
 }

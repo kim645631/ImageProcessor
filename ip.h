@@ -8,6 +8,8 @@
 #include <QImage>
 #include <QLabel>
 #include "gtransform.h"
+#include <QMouseEvent>
+#include "mouseevent.h"
 
 class Ip : public QMainWindow
 {
@@ -25,6 +27,11 @@ private slots:
     void getZoomOut();
     void getZoomIn();
     void showGeometryTtansform();
+protected:
+    void mouseMoveEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+
 private:
     Gtransform  *gWin;
     QWidget     *central;
@@ -39,5 +46,8 @@ private:
     QAction     *zoomOut;
     QAction     *zoomIn;
     QAction     *geometryAction;
+    QLabel      *mousePosLabel;
+
+
 };
 #endif // IP_H
