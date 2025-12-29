@@ -23,6 +23,14 @@ Ip::Ip(QWidget *parent)
     mainLayout->addWidget(imgWin);
     setCentralWidget(central);
     setMouseTracking(true);
+    statusLabel = new QLabel;
+    statusLabel->setText(tr("指標位置:"));
+    statusLabel->setFixedWidth(100);
+    mousePosLabel = new QLabel;
+    mousePosLabel->setText(tr(" "));
+    mousePosLabel->setFixedWidth(100);
+    statusBar()->addPermanentWidget(statusLabel);
+    statusBar()->addPermanentWidget(mousePosLabel);
     createActions();
     createMenus();
     createToolBars();
