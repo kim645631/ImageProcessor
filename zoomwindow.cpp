@@ -5,6 +5,7 @@
 #include <QPainter>
 #include <QScrollArea>
 #include <QLabel>
+#include <QStatusBar>
 
 ZoomWindow::ZoomWindow(const QImage &image, QWidget *parent)
     : QMainWindow(parent), img(image), drawMode(false), drawing(false),

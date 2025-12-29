@@ -17,7 +17,7 @@ Ip::Ip(QWidget *parent)
     statusLabel->setFixedWidth(100);
     MousePosLabel = new QLabel;
     MousePosLabel->setText(tr(" "));
-    MousePosLabel->setFixedWidth(100);
+    MousePosLabel->setFixedWidth(200);
     statusBar()->addPermanentWidget(statusLabel);
     statusBar()->addPermanentWidget(MousePosLabel);
     setMouseTracking(true);
