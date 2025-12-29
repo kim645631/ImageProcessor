@@ -10,10 +10,22 @@
 Ip::Ip(QWidget *parent)
     : QMainWindow(parent)
 {
+    statusLabel = new QLabel;
+    statusLabel->setText(tr("指標位置:"));
+    statusLabel->setFixedWidth(100);
+    MousePosLabel = new QLabel;
+    MousePosLabel->setText(tr(" "));
+    MousePosLabel->setFixedWidth(100);
+    statusBar()->addPermanentWidget(statusLabel);
+    statusBar()->addPermanentWidget(MousePosLabel);
+    setMouseTracking(true);
+
     setWindowTitle(tr("影像處理"));
     central = new QWidget();
+    central->setMouseTracking(true);
     QHBoxLayout *mainLayout = new QHBoxLayout(central);
     imgWin = new QLabel();
+    imgWin->setMouseTracking(true);
     QPixmap *initPixmap = new QPixmap(300,200);
     gWin = new Gtransform();
     initPixmap->fill(QColor(255,255,255));
@@ -22,7 +34,6 @@ Ip::Ip(QWidget *parent)
     imgWin->setPixmap(*initPixmap);
     mainLayout->addWidget(imgWin);
     setCentralWidget(central);
-    setMouseTracking(true);
     createActions();
     createMenus();
     createToolBars();
@@ -132,7 +143,7 @@ void Ip::mouseMoveEvent(QMouseEvent *event){
         int gray = qGray(img.pixel(this->x, this->y));
         str += " Gray: (" + QString::number(gray) + ")";
     }
-    mousePosLabel->setText(str);
+    MousePosLabel->setText(str);
 }
 void Ip::mousePressEvent(QMouseEvent *event){
     QString str ="(" + QString::number(event->x()) + ", " +
