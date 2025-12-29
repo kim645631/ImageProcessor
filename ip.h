@@ -45,7 +45,7 @@ private:
     QAction     *zoomOut;
     QAction     *zoomIn;
     QAction     *geometryAction;
-    QLabel      *mousePosLabel;
+    QLabel      *MousePosLabel;
     QLabel      *statusLabel;
     int x,y;
 
