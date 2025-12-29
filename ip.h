@@ -8,7 +8,10 @@
 #include <QImage>
 #include <QLabel>
 #include "gtransform.h"
+#include "zoomwindow.h"
 #include <QMouseEvent>
+#include <QRubberBand>
+#include <QRect>
 
 class Ip : public QMainWindow
 {
@@ -26,6 +29,7 @@ private slots:
     void getZoomOut();
     void getZoomIn();
     void showGeometryTtansform();
+    void toggleSelectMode();
 protected:
     void mouseMoveEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);
@@ -45,9 +49,17 @@ private:
     QAction     *zoomOut;
     QAction     *zoomIn;
     QAction     *geometryAction;
+    QAction     *selectModeAction;
     QLabel      *MousePosLabel;
     QLabel      *statusLabel;
     int x,y;
+    
+    // Selection mode variables
+    bool selectMode;
+    bool selecting;
+    QPoint selectionStart;
+    QPoint selectionEnd;
+    QRubberBand *rubberBand;
 
 
 };
