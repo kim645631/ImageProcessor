@@ -9,7 +9,6 @@
 #include <QLabel>
 #include "gtransform.h"
 #include <QMouseEvent>
-#include "mouseevent.h"
 
 class Ip : public QMainWindow
 {
@@ -47,6 +46,8 @@ private:
     QAction     *zoomIn;
     QAction     *geometryAction;
     QLabel      *mousePosLabel;
+    QLabel      *statusLabel;
+    int x,y;
 
 
 };

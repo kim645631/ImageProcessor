@@ -123,19 +123,25 @@ void Ip::showGeometryTtansform(){
     }
 }
 void Ip::mouseMoveEvent(QMouseEvent *event){
-
+    QPointF pos = event->position();
+    this->x = static_cast<int>(pos.x());
+    this->y = static_cast<int>(pos.y());
     QString str ="(" + QString::number(event->x()) + ", " +
                   QString::number(event->y()) + ")";
+    if (!img.isNull() && this->x >= 0 && this->x < img.width() && this->y >= 0 && this->y < img.height()) {
+        int gray = qGray(img.pixel(this->x, this->y));
+        str += " Gray: (" + QString::number(gray) + ")";
+    }
     mousePosLabel->setText(str);
 }
 void Ip::mousePressEvent(QMouseEvent *event){
     QString str ="(" + QString::number(event->x()) + ", " +
                   QString::number(event->y()) + ")";
     if(event->button()==Qt::LeftButton){
-        statusBar()->showMessage(tr("左鍵:")+str,1000);
+        statusBar()->showMessage(tr("左鍵:")+str);
     }
     else if(event->button()==Qt::RightButton){
-        statusBar()->showMessage(tr("右鍵:")+str,500);
+        statusBar()->showMessage(tr("右鍵:")+str);
     }
     else if(event->button()==Qt::MiddleButton){
         statusBar()->showMessage(tr("中鍵:")+str);
@@ -145,6 +151,6 @@ void Ip::mousePressEvent(QMouseEvent *event){
 void Ip::mouseReleaseEvent(QMouseEvent *event){
     QString str ="(" + QString::number(event->x()) + ", " +
                   QString::number(event->y()) + ")";
-    statusBar()->showMessage(tr("釋放:")+str,1000);
+    statusBar()->showMessage(tr("釋放:")+str);
     qDebug()<<"釋放";
 }
